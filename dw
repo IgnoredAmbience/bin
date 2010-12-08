@@ -1,0 +1,3 @@
+#!/bin/sh
+sudo ifconfig rum0 nwid IC-DoC
+sudo dhclient rum0

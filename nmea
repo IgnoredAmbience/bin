@@ -1,0 +1,6 @@
+for file in *.log
+do
+  gpsbabel -i nmea -f "$file" -o gpx -F "${file%.log}.gpx"
+  mv "$file" "nmea/${file%.log}.nmea"
+done
+

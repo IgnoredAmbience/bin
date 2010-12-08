@@ -1,0 +1,2 @@
+#!/bin/sh
+psselect -p1,_ -q $1 | gs -q -sDEVICE=pdfwrite -sPAPERSIZE=a4 -o $3 - $2

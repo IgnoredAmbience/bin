@@ -1,0 +1,2 @@
+#!/bin/sh
+mplayer -playlist http://www.bbc.co.uk/radio/listen/live/r$1.asx

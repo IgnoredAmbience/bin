@@ -1,2 +1,20 @@
 #!/bin/sh
-psselect -p1,_ -q $1 | gs -q -sDEVICE=pdfwrite -sPAPERSIZE=a4 -o $3 - $2
+if [ $# -lt 2 ]; then
+  progname=`basename $0`
+  echo \
+"Usage: $progname coverpage document [outfile]
+  Prepends coverpage and a blank page onto document.
+  
+  * coverpage must be a postscript document
+  * document may be in any format accepted by gs
+  
+  output will be a PDF file"
+  exit 1
+elif [ $# -lt 3 ]; then
+  outfile=${2%.*}-cover.pdf
+else
+  outfile=$3
+fi
+  
+psselect -p1,_ -q $1 | gs -q -sDEVICE=pdfwrite -sPAPERSIZE=a4 -o $outfile - $2
+

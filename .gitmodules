@@ -1,0 +1,3 @@
+[submodule "git-diff-grep"]
+	path = git-diff-grep
+	url = git://github.com/oscardelben/git-diff-grep.git

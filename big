@@ -1,2 +1,2 @@
 #!/bin/sh
-xterm -fs 12
+xterm -fs 14

@@ -1,0 +1,16 @@
+#!/bin/sh
+# $ - because I like to copy-paste commands like:
+# "$ git clone example.org/foo.git"
+
+if [ -z $1 ]; then
+  printf "usage: $ <command>\n"
+  printf "       Performs command\n"
+
+else
+  $*;
+
+  return_code=$?
+  if [ $return_code -ne 0 ]; then
+    exit $return_code
+  fi
+fi

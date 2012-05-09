@@ -1,4 +1,4 @@
-#!/bin/awk
+#!/bin/awk -f
 # Given a set of datafiles, output a record per file of averages for each field
 # We can redefine skip from the command line
 BEGIN { skip=1 }

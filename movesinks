@@ -1,0 +1,11 @@
+#!/bin/bash 
+
+sink=`pacmd list-sinks | grep '^[[:space:]]*index' | awk '{ print $2 }'`
+pacmd set-default-sink $sink
+
+inputs=`pactl list short sink-inputs | awk '{ print $1 }'`
+
+for input in $inputs;
+do
+  pacmd move-sink-input $input $sink
+done

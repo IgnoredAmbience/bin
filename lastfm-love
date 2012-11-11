@@ -1,0 +1,2 @@
+#!/bin/sh
+lastfm-mpd-cli love && xmobar-msg ♥ 10

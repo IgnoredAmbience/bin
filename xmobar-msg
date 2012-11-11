@@ -1,0 +1,4 @@
+#!/bin/sh
+echo "$1" > ~/.xmobarmsg.fifo
+sleep $2
+echo > ~/.xmobarmsg.fifo

@@ -2,6 +2,16 @@
 hosts=(edge fusion glyph matrix pixel visual)
 counts=(28 38 35 23 37 12 23)
 tmpfile=/tmp/uptime
+outfile=hosts
+
+if [ -n "$1" ]; then
+  for h in `head -$1 $outfile`; do
+    echo -n "$h: "
+    ssh $h uptime
+  done
+  exit 0
+fi
+
 
 len=${#hosts[@]}
 index=0
@@ -17,4 +27,4 @@ do
   ((index++))
 done
 
-sort -b -k 2 -g $tmpfile | awk '{print $1}'
+sort -b -k 2 -g $tmpfile | grep / | awk '{print $1}' > $outfile

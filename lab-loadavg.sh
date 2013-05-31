@@ -1,6 +1,6 @@
 #!/bin/bash
-hosts=(edge fusion glyph matrix pixel visual)
-counts=(28 38 35 23 37 12 23)
+hosts=(edge matrix pixel visual)
+counts=(28 23 37 23)
 tmpfile=/tmp/uptime
 outfile=hosts
 
@@ -22,7 +22,7 @@ do
   for i in $(seq -w ${counts[$index]})
   do
     echo -n "${hosts[$index]}$i " | tee -a $tmpfile
-    ssh ${hosts[$index]}$i cat /proc/loadavg >> $tmpfile || echo >> $tmpfile
+    ssh -o "ConnectTimeout 5" ${hosts[$index]}$i cat /proc/loadavg >> $tmpfile || echo >> $tmpfile
   done
   ((index++))
 done

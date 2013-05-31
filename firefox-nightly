@@ -1,0 +1,2 @@
+#!/bin/sh
+/usr/bin/firefox-nightly -no-remote -P nightly $*

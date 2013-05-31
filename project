@@ -1,0 +1,6 @@
+#!/bin/sh
+cd ~/project
+xterm -e vim language.tex &
+xterm -e latexmk language &
+xterm &
+

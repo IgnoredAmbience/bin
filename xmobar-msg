@@ -1,4 +1,6 @@
 #!/bin/sh
 echo "$1" > ~/.xmobarmsg.fifo
-sleep $2
-echo > ~/.xmobarmsg.fifo
+if [ "$2" != "" ]; then
+  sleep $2
+  echo > ~/.xmobarmsg.fifo
+fi

@@ -1,0 +1,3 @@
+#!/bin/sh
+station=${1:-"groovesalad"}
+radio http://somafm.com/$station.pls

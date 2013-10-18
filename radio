@@ -1,5 +1,6 @@
 #!/bin/sh
 # Play a stream with mplayer, outputting IceCast track titles to status bar
+play="▶"
 
 on_exit () {
   xmobar-msg
@@ -8,4 +9,12 @@ trap on_exit INT 0
 
 stream=${1:-"http://sfstream1.somafm.com:3000"}
 echo "Playing $stream"
-mplayer $stream 2> /dev/null | stdbuf -i0 -o0 -e0 sed -n "s/.*StreamTitle='\([^']\+\)'.*/▶ \1/p" > ~/.xmobarmsg.fifo
+
+output_track_title () {
+  stdbuf -i0 -o0 -e0 \
+  sed -n "s/.*StreamTitle='\(.\+\)';.\+/$play \1/p" \
+  | tee ~/.xmobarmsg.fifo \
+  | sed -n "s/$play //p"
+}
+
+mplayer $stream 2> /dev/null | output_track_title

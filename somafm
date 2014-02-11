@@ -1,3 +1,45 @@
-#!/bin/sh
-station=${1:-"groovesalad"}
+#!/bin/bash
+stations=(\
+  groovesalad130\
+  dronezone130\
+  indiepop130\
+  lush130\
+  secretagent130\
+  spacestation130\
+  u80s130\
+  poptron64\
+  beatblender64\
+  bootliquor130\
+  suburbsofgoa130\
+  deepspaceone64\
+  sonicuniverse64\
+  illstreet130\
+  thetrip64\
+  cliqhop64\
+  bagel64\
+  digitalis130\
+  dubstep64\
+  events64\
+  folkfwd64\
+  missioncontrol64\
+  covers64\
+  doomed64\
+  brfm130\
+  earwaves64\
+  sf1033\
+  airwaves64\
+)
+
+
+if [ -z "$1" ]
+then
+  echo "Available stations:"
+  echo ${stations[*]}
+
+  num_stations=${#stations[*]}
+  station=${stations[$((RANDOM % num_stations))]}
+else
+  station=$1
+fi
+
 radio http://somafm.com/${station}.pls

@@ -5,16 +5,23 @@ play="▶"
 on_exit () {
   xmobar-msg
 }
-trap on_exit INT 0
+trap on_exit EXIT
+
+on_int () {
+  on_exit
+  kill -QUIT -$$
+}
+trap on_int INT
 
 stream=${1:-"http://sfstream1.somafm.com:3000"}
 echo "Playing $stream"
 
 output_track_title () {
   stdbuf -i0 -o0 -e0 \
-  sed -n "s/.*StreamTitle='\(.\+\)';.\+/$play \1/p" \
+  sed -nu "s/.*StreamTitle='\(.\+\)';.\+/$play \1/p" \
   | tee ~/.xmobarmsg.fifo \
   | sed -n "s/$play //p"
 }
 
-mplayer $stream 2> /dev/null | output_track_title
+#mplayer $stream | tee /dev/stderr | output_track_title
+mplayer $stream 2>/dev/null | output_track_title

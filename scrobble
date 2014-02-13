@@ -23,5 +23,5 @@ if [ $# -gt 0 ]; then
   set_artist_track_str "$1" "$2"
   echo $1 > $CURRENT_SONG_FILE
   echo -n $2 >> $CURRENT_SONG_FILE
-  lf-submit.sh -n "$artiststr" "$trackstr"
+  lf-submit.sh -n "$artiststr" "$trackstr" "duration=300"
 fi

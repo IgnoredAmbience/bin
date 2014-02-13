@@ -2,6 +2,7 @@
 # Copyright 2010, 2011 Yu-Jie Lin
 # BSD License
 
+# Contains APIKEY and SECRET variables for last.fm credentials
 source 'lf-submit.sh-secret'
 
 APPNAME='lf-submit.sh'

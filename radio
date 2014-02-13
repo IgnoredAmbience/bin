@@ -1,15 +1,19 @@
-#!/bin/sh
+#!/bin/bash
 # Play a stream with mplayer, outputting IceCast track titles to status bar
 play="▶"
 
+# Executes each new track with "artist" "track", and with no args on exit.
+scrobble_cmd="scrobble"
+
 on_exit () {
   xmobar-msg
+  $scrobble_cmd
 }
 trap on_exit EXIT
 
 on_int () {
   on_exit
-  kill -QUIT -$$
+  kill 0
 }
 trap on_int INT
 
@@ -17,10 +21,12 @@ stream=${1:-"http://sfstream1.somafm.com:3000"}
 echo "Playing $stream"
 
 output_track_title () {
-  stdbuf -i0 -o0 -e0 \
   sed -nu "s/.*StreamTitle='\(.\+\)';.\+/$play \1/p" \
   | tee ~/.xmobarmsg.fifo \
-  | sed -n "s/$play //p"
+  | sed -nu "s/$play //p" \
+  | tee /dev/tty \
+  | sed -nu "s/\(.*\) - \(.*\)/\"\1\" \"\2\"\n/p" \
+  | xargs -L 1 $scrobble_cmd
 }
 
 #mplayer $stream | tee /dev/stderr | output_track_title

@@ -1,0 +1,27 @@
+#!/bin/bash
+# Usage:
+#  scrobble
+#    Clears now-playing status, doesn't scrobble previous track.
+#  scrobble <artist> <track>
+#    Updates now-playing to given artist and track, scrobbling any previously set now playing status.
+
+function set_artist_track_str () {
+  artiststr="artist=$1"
+  trackstr="track=$2"
+}
+
+export LOG=1
+CURRENT_SONG_FILE="/tmp/scrobble.currentsong"
+
+if [ -f $CURRENT_SONG_FILE ]; then
+  set_artist_track_str "`head -1 $CURRENT_SONG_FILE`" "`tail -1 $CURRENT_SONG_FILE`"
+  lf-submit.sh -s "chosenByUser=0" "$artiststr" "$trackstr" "timestamp=`date -u +%s`"
+  rm $CURRENT_SONG_FILE
+fi
+
+if [ $# -gt 0 ]; then
+  set_artist_track_str "$1" "$2"
+  echo $1 > $CURRENT_SONG_FILE
+  echo -n $2 >> $CURRENT_SONG_FILE
+  lf-submit.sh -n "$artiststr" "$trackstr"
+fi

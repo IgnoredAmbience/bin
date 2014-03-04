@@ -1,5 +1,4 @@
 #!/bin/bash
 date
 echo
-echo
 head -n-7 /etc/motd

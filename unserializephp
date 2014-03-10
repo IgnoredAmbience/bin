@@ -1,3 +1,0 @@
-#!/bin/sh
-php -r "print_r(unserialize(file_get_contents('$1')));"
-

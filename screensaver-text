@@ -1,4 +1,9 @@
 #!/bin/bash
+for i in `seq 10`; do
+  echo -e "\f"
+done
 date
-echo
+for i in `seq 10`; do
+  echo -e "\f"
+done
 head -n-7 /etc/motd

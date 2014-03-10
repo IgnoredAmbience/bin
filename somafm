@@ -30,12 +30,20 @@ stations=(\
   airwaves64\
 )
 
+help () {
+  echo "Available stations:"
+  echo ${stations[*]}
+}
+
+case "$1" in
+  --help | -h)
+    help
+    exit
+    ;;
+esac
 
 if [ -z "$1" ]
 then
-  echo "Available stations:"
-  echo ${stations[*]}
-
   num_stations=${#stations[*]}
   station=${stations[$((RANDOM % num_stations))]}
 else

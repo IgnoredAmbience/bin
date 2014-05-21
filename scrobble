@@ -23,9 +23,10 @@ if [ $# -gt 0 ]; then
   if [ -f $CURRENT_SONG_FILE ]; then
     get_old_artist_track_str
     # Don't resubmit same track if duplicated
-    if [ "$oldartiststr" != "$artiststr" -a "$oldtrackstr" != "$trackstr" ]; then
-      lf-submit.sh -s "chosenByUser=0" "$oldartiststr" "$oldtrackstr" "timestamp=`date -u +%s`"
+    if [ "$oldartiststr" = "$artiststr" -a "$oldtrackstr" = "$trackstr" ]; then
+      exit 0
     fi
+    lf-submit.sh -s "chosenByUser=0" "$oldartiststr" "$oldtrackstr" "timestamp=`date -u +%s`"
   fi
 
   echo $1 > $CURRENT_SONG_FILE

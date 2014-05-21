@@ -10,15 +10,24 @@ function set_artist_track_str () {
   trackstr="track=$2"
 }
 
-export LOG=1
+function get_old_artist_track_str () {
+  oldartiststr="artist=`head -1 $CURRENT_SONG_FILE`"
+  oldtrackstr="track=`tail -1 $CURRENT_SONG_FILE`"
+}
+
+export LOG=0
 CURRENT_SONG_FILE="/tmp/scrobble.currentsong"
 
 if [ $# -gt 0 ]; then
-  if [ -f $CURRENT_SONG_FILE ]; then
-    set_artist_track_str "`head -1 $CURRENT_SONG_FILE`" "`tail -1 $CURRENT_SONG_FILE`"
-    lf-submit.sh -s "chosenByUser=0" "$artiststr" "$trackstr" "timestamp=`date -u +%s`"
-  fi
   set_artist_track_str "$1" "$2"
+  if [ -f $CURRENT_SONG_FILE ]; then
+    get_old_artist_track_str
+    # Don't resubmit same track if duplicated
+    if [ "$oldartiststr" != "$artiststr" -a "$oldtrackstr" != "$trackstr" ]; then
+      lf-submit.sh -s "chosenByUser=0" "$oldartiststr" "$oldtrackstr" "timestamp=`date -u +%s`"
+    fi
+  fi
+
   echo $1 > $CURRENT_SONG_FILE
   echo -n $2 >> $CURRENT_SONG_FILE
   lf-submit.sh -n "$artiststr" "$trackstr" "duration=300"

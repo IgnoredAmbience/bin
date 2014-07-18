@@ -35,6 +35,12 @@ help () {
   echo ${stations[*]}
 }
 
+if [ -n "${COMP_LINE}" ]
+then
+    compgen -W "${stations[*]} --help -h" -- ${COMP_LINE##* }
+    exit
+fi
+
 case "$1" in
   --help | -h)
     help

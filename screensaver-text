@@ -6,4 +6,8 @@ date
 for i in `seq 10`; do
   echo -e "\f"
 done
-head -n-7 /etc/motd
+if [ -f ~/.screensaver-text ]; then
+  cat ~/.screensaver-text
+else
+  head -n-7 /etc/motd
+fi

@@ -1,2 +1,2 @@
 #!/bin/bash
-jabref -i --importToOpen "$*"
+jabref --importToOpen "$*"

@@ -1,2 +1,36 @@
 #!/bin/sh
-mplayer -playlist http://www.bbc.co.uk/radio/listen/live/r$1.asx
+stations=(\
+  radio_one\
+  1xtra\
+  radio_two\
+  radio_three\
+  radio_fourfm\
+  radio_fourlw\
+  radio_four_extra\
+  radio_five_live\
+  radio_five_live_sports_extra\
+  6music\
+  london\
+)
+
+help () {
+  echo "Available stations:"
+  echo ${stations[*]}
+}
+
+case "$1" in
+  --help | -h)
+    help
+    exit
+    ;;
+esac
+
+if [ -z "$1" ]
+then
+  num_stations=${#stations[*]}
+  station=${stations[$((RANDOM % num_stations))]}
+else
+  station=$1
+fi
+
+mplayer http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_${station}.m3u8

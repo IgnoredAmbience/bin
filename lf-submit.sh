@@ -19,6 +19,7 @@ _gen_signature_string () {
 	}
 
 gen_signature () {
+	log $(_gen_signature_string "$@")
 	read signature _ <<< "$(echo -n "$(_gen_signature_string "$@")$SECRET" | md5sum)"
 	}
 

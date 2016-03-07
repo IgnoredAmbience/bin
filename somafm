@@ -28,6 +28,9 @@ stations=(\
   earwaves64\
   sf1033\
   airwaves64\
+  fluid130 \
+  seventies64 \
+  thistle64 \
 )
 
 help () {

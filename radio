@@ -30,4 +30,4 @@ output_track_title () {
 }
 
 #mplayer $stream | tee /dev/stderr | output_track_title
-mplayer $stream 2>/dev/null | output_track_title
+mplayer -allow-dangerous-playlist-parsing $stream 2>/dev/null | output_track_title

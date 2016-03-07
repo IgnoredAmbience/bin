@@ -1,0 +1,10 @@
+#!/bin/bash
+
+while read -r rev; do
+    git checkout "$rev"
+    $2
+    if ! $?; then
+        >&2 echo "Commit $rev failed"
+        exit 1
+    fi
+done < <(git rev-list "$1")

@@ -1,0 +1,9 @@
+#!/bin/bash
+TEXT=$(echo | dmenu)
+if [ -n "$TEXT" ]; then
+  echo "$TEXT" > ~/.screensaver-text
+else
+  rm ~/.screensaver-text
+fi
+xscreensaver-command -lock
+

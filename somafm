@@ -1,36 +1,36 @@
 #!/bin/bash
 stations=(\
-  groovesalad130\
-  dronezone130\
-  indiepop130\
-  lush130\
-  secretagent130\
-  spacestation130\
-  u80s130\
-  poptron64\
-  beatblender64\
-  bootliquor130\
-  suburbsofgoa130\
-  deepspaceone64\
-  sonicuniverse64\
-  illstreet130\
-  thetrip64\
-  cliqhop64\
-  bagel64\
-  digitalis130\
-  dubstep64\
-  events64\
-  folkfwd64\
-  missioncontrol64\
-  covers64\
-  doomed64\
-  brfm130\
-  earwaves64\
-  sf1033\
-  airwaves64\
+  airwaves64 \
+  bagel64 \
+  beatblender64 \
+  bootliquor130 \
+  brfm130 \
+  cliqhop64 \
+  covers64 \
+  deepspaceone64 \
+  digitalis130 \
+  doomed64 \
+  dronezone130 \
+  dubstep64 \
+  earwaves64 \
+  events64 \
   fluid130 \
+  folkfwd64 \
+  groovesalad130 \
+  illstreet130 \
+  indiepop130 \
+  lush130 \
+  missioncontrol64 \
+  poptron64 \
+  secretagent130 \
   seventies64 \
+  sf1033 \
+  sonicuniverse64 \
+  spacestation130 \
+  suburbsofgoa130 \
+  thetrip64 \
   thistle64 \
+  u80s130 \
 )
 
 help () {

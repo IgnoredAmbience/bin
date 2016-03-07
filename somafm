@@ -1,33 +1,35 @@
 #!/bin/bash
 stations=(\
-  airwaves64 \
+  7soul130 \
   bagel64 \
   beatblender64 \
   bootliquor130 \
   brfm130 \
   cliqhop64 \
   covers64 \
-  deepspaceone64 \
+  deepspaceone130 \
+  defcon64 \
   digitalis130 \
   doomed64 \
   dronezone130 \
   dubstep64 \
-  earwaves64 \
-  events64 \
+  earwaves130 \
   fluid130 \
   folkfwd64 \
   groovesalad130 \
   illstreet130 \
   indiepop130 \
   lush130 \
+  metal130 \
   missioncontrol64 \
   poptron64 \
   secretagent130 \
   seventies64 \
-  sf1033 \
+  sf103364 \
   sonicuniverse64 \
   spacestation130 \
   suburbsofgoa130 \
+  sxfm64 \
   thetrip64 \
   thistle64 \
   u80s130 \

@@ -1,2 +1,2 @@
 #!/bin/sh
-xterm -fs 14
+urxvt -fs 14

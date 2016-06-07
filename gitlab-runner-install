@@ -1,0 +1,109 @@
+#!/bin/bash -e
+
+echo "* Enter details for kerberos ticket generation, these will be stored in a keytab!"
+echo "Enter IC username:"
+read kuser
+echo "Enter IC password:"
+read kpass
+
+apt-get install kstart
+
+chmod a+rw `tty`
+
+echo "* Create user gitlab-runner"
+useradd -r -m --shell /bin/bash gitlab-runner || true
+chmod -R u=rwX,go= /home/gitlab-runner
+
+echo "* sudo to gitlab-runner"
+sudo -u gitlab-runner bash -e - <<ENDSUDO
+cd ~gitlab-runner
+
+echo "* Configuring BASH"
+echo "[[ -f ~/.bashrc ]] && . ~/.bashrc" > .bash_profile
+cat - >> .bashrc <<-'BASHRC'
+	export LC_ALL=en_GB.UTF-8
+	export NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+	export GEM_HOME=\$HOME/gems
+	export PATH=\$HOME/gems/bin:\$HOME/bin:\$PATH
+	export KRB5CCNAME=FILE:\$HOME/kerberos/ticket
+BASHRC
+
+echo "* Configuring SSH"
+echo "  Confirm these hostkeys are correct:"
+ssh -o "PasswordAuthentication no" git@github.com || true
+ssh -o "PasswordAuthentication no" git@gitlab.doc.ic.ac.uk || true
+
+echo "* Configuring Gitlab Runner"
+mkdir -p bin
+[ -f bin/gitlab-runner ] || wget -O bin/gitlab-runner https://gitlab-ci-multi-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-ci-multi-runner-linux-amd64
+chmod a+x bin/gitlab-runner
+[ -f config.toml ] || bin/gitlab-runner register -c config.toml < `tty`
+
+echo "* Configuring Kerberos ticket generation"
+mkdir -p kerberos
+chmod go= kerberos
+
+kinit $kuser@IC.AC.UK <<< $kpass
+kvno="\$(kvno krbtgt/IC.AC.UK@IC.AC.UK | tr -d -c 0-9)"
+ktutil <<< "
+addent -password -p $kuser@IC.AC.UK -k \$kvno -e aes256-cts-hmac-sha1-96
+$kpass
+wkt kerberos/keytab
+exit"
+kinit -k -t kerberos/keytab $kuser@IC.AC.UK
+chmod -R go= kerberos
+ENDSUDO
+echo "* End sudo"
+
+echo "* Installing upstart scripts"
+cat - > /etc/init/k5start.conf <<-ENDK5
+	description "Kerberos ticket generator"
+
+	start on static-network-up and runlevel [2345]
+	stop on runlevel [!2345]
+
+	console log
+
+	setuid gitlab-runner
+	chdir /home/gitlab-runner/kerberos
+
+	exec /usr/bin/k5start -U -f keytab -k ticket -K 10
+	reload signal ALRM
+
+ENDK5
+chmod a+r /etc/init/k5start.conf
+
+cat - > /etc/init/gitlab-runner.conf <<-ENDGITLAB
+	# GitLab Runner
+
+	description    "gitlab-runner"
+
+	kill signal INT
+
+	start on filesystem or runlevel [2345]
+	stop on runlevel [!2345]
+
+	#setuid username
+
+	respawn
+	respawn limit 10 5
+	umask 022
+
+	console none
+
+	pre-start script
+	    test -x /home/gitlab-runner/bin/gitlab-runner || { stop; exit 0; }
+	end script
+
+	# Start
+	# Due to bug in Precise Upstart this is the only way to inherit user groups
+	# http://upstart.ubuntu.com/cookbook/#changing-user
+	exec start-stop-daemon --start -c gitlab-runner  --exec /home/gitlab-runner/bin/gitlab-runner --  "run" "--working-directory" "/home/gitlab-runner" "--config" "/home/gitlab-runner/config.toml" "--service" "gitlab-runner" "--syslog"
+ENDGITLAB
+chmod a+r /etc/init/gitlab-runner.conf
+
+initctl reload-configuration
+initctl start k5start
+initctl start gitlab-runner
+
+chmod o= `tty`

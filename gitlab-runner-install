@@ -4,7 +4,7 @@ echo "* Enter details for kerberos ticket generation, these will be stored in a 
 echo "Enter IC username:"
 read kuser
 echo "Enter IC password:"
-read kpass
+read -s kpass
 
 apt-get install kstart
 

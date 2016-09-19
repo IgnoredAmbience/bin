@@ -19,7 +19,6 @@ _gen_signature_string () {
 	}
 
 gen_signature () {
-	log $(_gen_signature_string "$@")
 	read signature _ <<< "$(echo -n "$(_gen_signature_string "$@")$SECRET" | md5sum)"
 	}
 
@@ -133,7 +132,7 @@ if source "$CONFIG_FILE" &>/dev/null; then
 			params[${#params[@]}]="api_sig=$signature"
 			gen_http_param_string "${params[@]}"
 			log "$http_param_string"
-			resp=$(curl -s --data "$http_param_string" $USERAGENT "$API_BASE?$http_param_string")
+			resp=$(curl -s --data "$http_param_string" $USERAGENT "$API_BASE")
 			log "$resp"
 			get_lfm_status "$resp"
 			[[ "$lfm_status" != "ok" ]] && exit 1
@@ -152,7 +151,7 @@ if source "$CONFIG_FILE" &>/dev/null; then
 			params[${#params[@]}]="api_sig=$signature"
 			gen_http_param_string "${params[@]}"
 			log "$http_param_string"
-			resp=$(curl -s --data "$http_param_string" $USERAGENT "$API_BASE?$http_param_string")
+			resp=$(curl -s --data "$http_param_string" $USERAGENT "$API_BASE")
 			log "$resp"
 			get_lfm_status "$resp"
 			[[ "$lfm_status" != "ok" ]] && exit 1
